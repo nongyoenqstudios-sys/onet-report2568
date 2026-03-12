@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O-NET 2568 - บ้านหนองแสง</title>
+<link href="https://fonts.googleapis.com/css2?family=K2D:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f4ff;--card:#fff;--text:#1e293b;--muted:#64748b;--border:rgba(0,0,0,.08);--amber:#d97706;--blue:#2563eb;--rose:#e11d48;--green:#059669;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'K2D',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 5%,rgba(217,119,6,.07) 0%,transparent 55%),radial-gradient(ellipse 60% 55% at 85% 90%,rgba(37,99,235,.06) 0%,transparent 55%);pointer-events:none;z-index:0;}
+.wrapper{max-width:920px;margin:0 auto;padding:44px 20px 72px;position:relative;z-index:1;}
+
+.header{text-align:center;margin-bottom:32px;animation:fadeDown .6s ease both;}
+.badge{display:inline-block;background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.35);color:var(--amber);font-family:'K2D',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:14px;}
+h1{font-family:'K2D',sans-serif;font-size:clamp(1.8rem,4.5vw,2.7rem);font-weight:800;line-height:1.2;margin-bottom:6px;}
+h1 em{color:var(--amber);font-style:normal;}
+.sub{font-size:1.06rem;color:var(--muted);font-weight:300;}
+.school-name{margin-top:8px;font-family:'K2D',sans-serif;font-size:1.15rem;font-weight:600;color:#334155;}
+
+/* Tabs */
+.tabs{display:flex;justify-content:center;gap:6px;margin-bottom:26px;animation:fadeUp .6s .15s ease both;}
+.tab{padding:9px 22px;border-radius:999px;font-family:'K2D',sans-serif;font-size:1.15rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);transition:all .22s ease;background:white;color:var(--muted);box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.tab:hover{color:var(--text);border-color:#94a3b8;}
+.tab.active{background:var(--text);color:white;border-color:var(--text);box-shadow:0 3px 12px rgba(30,41,59,.2);}
+
+.panel{display:none;animation:fadeUp .3s ease both;}
+.panel.active{display:block;}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px;}
+@media(max-width:560px){.cards{grid-template-columns:1fr;}}
+.card-wrap{}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px 22px 18px;position:relative;overflow:hidden;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s ease,box-shadow .2s ease;animation:fadeUp .5s ease both;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.11);}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;}
+.card:nth-child(1){animation-delay:.08s;}.card:nth-child(2){animation-delay:.16s;}.card:nth-child(3){animation-delay:.24s;}.card:nth-child(4){animation-delay:.32s;}
+.card[data-color="amber"]::before{background:#f59e0b;}
+.card[data-color="blue"]::before{background:#3b82f6;}
+.card[data-color="rose"]::before{background:#f43f5e;}
+.card[data-color="green"]::before{background:#10b981;}
+
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.card-icon{font-size:1.5rem;}
+.expand-btn{font-size:1.15rem;color:var(--muted);background:rgba(0,0,0,.05);border:none;border-radius:999px;padding:4px 10px;cursor:pointer;font-family:'K2D',sans-serif;transition:all .18s ease;white-space:nowrap;}
+.expand-btn:hover{background:rgba(0,0,0,.1);}
+.card-subject{font-family:'K2D',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:2px;}
+.card-code{font-size:.99rem;color:var(--muted);letter-spacing:.07em;margin-bottom:14px;}
+
+.score-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;position:relative;}
+.score-label{font-size:.86rem;color:var(--muted);width:60px;flex-shrink:0;}
+.bar-wrap{flex:1;height:9px;background:rgba(0,0,0,.07);border-radius:99px;overflow:visible;position:relative;cursor:pointer;}
+.bar{height:100%;border-radius:99px;width:0;transition:width 1s cubic-bezier(.16,1,.3,1);}
+.score-value{font-family:'K2D',sans-serif;font-size:1.15rem;font-weight:700;width:36px;text-align:right;flex-shrink:0;}
+
+.tooltip{position:absolute;top:-32px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;font-size:1.15rem;font-family:'K2D',sans-serif;padding:4px 9px;border-radius:7px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s ease;z-index:20;}
+.tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1e293b;}
+.bar-wrap:hover .tooltip{opacity:1;}
+
+.diff-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:99px;font-family:'K2D',sans-serif;font-size:.87rem;font-weight:700;margin-top:7px;}
+.diff-pill.below{background:rgba(225,29,72,.07);color:#be123c;border:1px solid rgba(225,29,72,.18);}
+.diff-pill.above{background:rgba(5,150,105,.07);color:#047857;border:1px solid rgba(5,150,105,.18);}
+
+/* Sub-panel */
+.sub-panel{display:none;background:rgba(248,250,252,.9);border:1px solid var(--border);border-top:none;border-radius:0 0 20px 20px;padding:14px 22px 18px;animation:fadeUp .25s ease both;}
+.sub-panel.open{display:block;}
+.sub-title{font-size:1.15rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.sub-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.sub-label{font-size:.86rem;color:var(--text);flex:1;}
+.sub-bar-wrap{width:100px;height:6px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden;flex-shrink:0;}
+.sub-bar{height:100%;border-radius:99px;width:0;transition:width .85s cubic-bezier(.16,1,.3,1);}
+.sub-val{font-family:'K2D',sans-serif;font-size:.85rem;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
+
+/* Stats strip */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:18px;}
+@media(max-width:560px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,.05);transition:transform .18s ease,box-shadow .18s ease;cursor:default;}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.09);}
+.stat-num{font-family:'K2D',sans-serif;font-size:2.4rem;font-weight:800;line-height:1;margin-bottom:4px;}
+.stat-lbl{font-size:1.15rem;color:var(--muted);line-height:1.5;}
+
+/* Develop */
+.develop{background:linear-gradient(135deg,rgba(217,119,6,.06),rgba(37,99,235,.04));border:1px solid rgba(217,119,6,.22);border-radius:16px;padding:18px 22px;}
+.develop-title{font-family:'K2D',sans-serif;font-size:.86rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:11px;}
+.develop-list{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{background:rgba(255,255,255,.85);border:1px solid rgba(0,0,0,.09);border-radius:8px;padding:5px 11px;font-size:1.06rem;display:flex;align-items:center;gap:6px;color:var(--text);transition:all .18s ease;cursor:default;}
+.chip:hover{background:white;box-shadow:0 2px 8px rgba(0,0,0,.08);transform:translateY(-1px);}
+.chip-num{font-family:'K2D',sans-serif;font-weight:700;color:var(--amber);font-size:1.15rem;}
+
+/* Chart panel */
+.chart-section{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 26px 20px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:18px;}
+.chart-title{font-family:'K2D',sans-serif;font-size:1.08rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+
+/* Filter */
+.filter-row{display:flex;justify-content:center;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-btn{padding:7px 16px;border-radius:999px;border:1.5px solid var(--border);background:white;font-family:'K2D',sans-serif;font-size:1.06rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .18s ease;}
+.filter-btn:hover{border-color:#94a3b8;color:var(--text);}
+.filter-btn.on{border-color:var(--text);background:var(--text);color:white;}
+
+/* Bar chart */
+.chart-bars{display:flex;align-items:flex-end;gap:16px;height:190px;border-bottom:2px solid rgba(0,0,0,.08);margin-bottom:16px;}
+.chart-group{flex:1;display:flex;flex-direction:column;align-items:center;}
+.chart-cols{display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center;}
+.chart-col{border-radius:6px 6px 0 0;width:26px;transition:height 1s cubic-bezier(.16,1,.3,1);height:0;cursor:pointer;position:relative;}
+.chart-col:hover{filter:brightness(1.1);}
+.chart-col .c-tip{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:#1e293b;color:white;font-size:.94rem;font-family:'K2D',sans-serif;padding:3px 7px;border-radius:6px;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none;z-index:10;}
+.chart-col:hover .c-tip{opacity:1;}
+.chart-label{font-size:.85rem;color:var(--muted);margin-top:8px;text-align:center;}
+.chart-legend{display:flex;justify-content:center;gap:18px;}
+.cl-item{display:flex;align-items:center;gap:6px;font-size:.88rem;color:var(--muted);}
+.cl-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+
+/* Table */
+.comp-table{width:100%;border-collapse:separate;border-spacing:0;}
+.comp-table th,.comp-table td{padding:10px 13px;text-align:center;font-size:.94rem;border-bottom:1px solid rgba(0,0,0,.06);}
+.comp-table th{font-family:'K2D',sans-serif;font-weight:700;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(0,0,0,.02);}
+.comp-table td:first-child{text-align:left;font-weight:600;}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table tr:hover td{background:rgba(0,0,0,.015);}
+.badge-up{display:inline-block;padding:2px 8px;border-radius:99px;font-size:1.15rem;font-weight:700;background:rgba(5,150,105,.08);color:#047857;border:1px solid rgba(5,150,105,.18);}
+.badge-dn{display:inline-block;padding:2px 8px;border-radius:99px;font-size:1.15rem;font-weight:700;background:rgba(225,29,72,.07);color:#be123c;border:1px solid rgba(225,29,72,.18);}
+
+/* Legend row */
+.legend{display:flex;justify-content:center;gap:22px;margin-bottom:24px;animation:fadeUp .6s .12s ease both;}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:.96rem;color:var(--muted);}
+.ld{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+.footer{text-align:center;margin-top:26px;font-size:1.15rem;color:rgba(100,116,139,.6);letter-spacing:.04em;}
+
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp  {from{opacity:0;transform:translateY(16px) }to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<div class="header">
+  <div class="badge">O-NET Report · ปีการศึกษา 2568</div>
+  <h1>สรุปผลการทดสอบ <em>O-NET</em><br>ชั้นประถมศึกษาปีที่ 6</h1>
+  <div class="school-name">🏫 โรงเรียนบ้านหนองแสง · จังหวัดยโสธร</div>
+  <div class="sub">เปรียบเทียบคะแนนเฉลี่ยโรงเรียน vs ระดับประเทศ</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('overview')">📋 ภาพรวม</div>
+  <div class="tab" onclick="switchTab('chart')">📊 กราฟเปรียบเทียบ</div>
+  <div class="tab" onclick="switchTab('detail')">🔍 รายละเอียดสาระ</div>
+</div>
+
+<!-- ══ OVERVIEW ══ -->
+<div class="panel active" id="panel-overview">
+
+  <div class="legend">
+    <div class="legend-item"><div class="ld" style="background:#f59e0b"></div><span>คะแนนโรงเรียน</span></div>
+    <div class="legend-item"><div class="ld" style="background:#94a3b8"></div><span>คะแนนระดับประเทศ</span></div>
+  </div>
+
+  <div class="cards">
+
+    <div class="card-wrap">
+      <div class="card" data-color="amber" onclick="toggleSub('thai',event)">
+        <div class="card-top"><div class="card-icon">📖</div><button class="expand-btn" id="btn-thai">ดูรายสาระ ▾</button></div>
+        <div class="card-subject">ภาษาไทย</div>
+        <div class="card-code">รหัสวิชา 61 · ผู้เข้าสอบ 3 คน</div>
+        <div class="score-row"><span class="score-label">โรงเรียน</span><div class="bar-wrap"><div class="bar" data-w="27.75" style="background:#f59e0b"></div><div class="tooltip">27.75 / 100 คะแนน</div></div><span class="score-value" style="color:#d97706">27.75</span></div>
+        <div class="score-row"><span class="score-label">ประเทศ</span><div class="bar-wrap"><div class="bar" data-w="47.60" style="background:#cbd5e1"></div><div class="tooltip">47.60 / 100 คะแนน</div></div><span class="score-value" style="color:#94a3b8">47.60</span></div>
+        <div class="diff-pill below">▼ ต่ำกว่าประเทศ 19.85 คะแนน</div>
+      </div>
+      <div class="sub-panel" id="sub-thai">
+        <div class="sub-title">คะแนนรายสาระ (โรงเรียน)</div>
+        <div class="sub-row"><span class="sub-label">การอ่าน</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="33.33" style="background:#fbbf24"></div></div><span class="sub-val" style="color:#d97706">33.33</span></div>
+        <div class="sub-row"><span class="sub-label">การเขียน</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="37.20" style="background:#fbbf24"></div></div><span class="sub-val" style="color:#d97706">37.20</span></div>
+        <div class="sub-row"><span class="sub-label">การฟัง การดู และการพูด</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="22.22" style="background:#fbbf24"></div></div><span class="sub-val" style="color:#d97706">22.22</span></div>
+        <div class="sub-row"><span class="sub-label">หลักการใช้ภาษาไทย</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="27.78" style="background:#fbbf24"></div></div><span class="sub-val" style="color:#d97706">27.78</span></div>
+        <div class="sub-row"><span class="sub-label">วรรณคดีและวรรณกรรม</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="0" style="background:#fbbf24"></div></div><span class="sub-val" style="color:#d97706">0.00</span></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" data-color="blue" onclick="toggleSub('eng',event)">
+        <div class="card-top"><div class="card-icon">🌐</div><button class="expand-btn" id="btn-eng">ดูรายสาระ ▾</button></div>
+        <div class="card-subject">ภาษาอังกฤษ</div>
+        <div class="card-code">รหัสวิชา 63 · ผู้เข้าสอบ 3 คน</div>
+        <div class="score-row"><span class="score-label">โรงเรียน</span><div class="bar-wrap"><div class="bar" data-w="22.92" style="background:#3b82f6"></div><div class="tooltip">22.92 / 100 คะแนน</div></div><span class="score-value" style="color:#2563eb">22.92</span></div>
+        <div class="score-row"><span class="score-label">ประเทศ</span><div class="bar-wrap"><div class="bar" data-w="33.58" style="background:#cbd5e1"></div><div class="tooltip">33.58 / 100 คะแนน</div></div><span class="score-value" style="color:#94a3b8">33.58</span></div>
+        <div class="diff-pill below">▼ ต่ำกว่าประเทศ 10.66 คะแนน</div>
+      </div>
+      <div class="sub-panel" id="sub-eng">
+        <div class="sub-title">คะแนนรายสาระ (โรงเรียน)</div>
+        <div class="sub-row"><span class="sub-label">ภาษาเพื่อการสื่อสาร</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="21.21" style="background:#60a5fa"></div></div><span class="sub-val" style="color:#2563eb">21.21</span></div>
+        <div class="sub-row"><span class="sub-label">ภาษาและวัฒนธรรม</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="27.78" style="background:#60a5fa"></div></div><span class="sub-val" style="color:#2563eb">27.78</span></div>
+        <div class="sub-row"><span class="sub-label">ภาษากับชุมชนและโลก</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="25.00" style="background:#60a5fa"></div></div><span class="sub-val" style="color:#2563eb">25.00</span></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" data-color="rose" onclick="toggleSub('math',event)">
+        <div class="card-top"><div class="card-icon">🔢</div><button class="expand-btn" id="btn-math">ดูรายสาระ ▾</button></div>
+        <div class="card-subject">คณิตศาสตร์</div>
+        <div class="card-code">รหัสวิชา 64 · ผู้เข้าสอบ 3 คน</div>
+        <div class="score-row"><span class="score-label">โรงเรียน</span><div class="bar-wrap"><div class="bar" data-w="21.67" style="background:#f43f5e"></div><div class="tooltip">21.67 / 100 คะแนน</div></div><span class="score-value" style="color:#e11d48">21.67</span></div>
+        <div class="score-row"><span class="score-label">ประเทศ</span><div class="bar-wrap"><div class="bar" data-w="24.90" style="background:#cbd5e1"></div><div class="tooltip">24.90 / 100 คะแนน</div></div><span class="score-value" style="color:#94a3b8">24.90</span></div>
+        <div class="diff-pill below">▼ ต่ำกว่าประเทศ 3.23 คะแนน</div>
+      </div>
+      <div class="sub-panel" id="sub-math">
+        <div class="sub-title">คะแนนรายสาระ (โรงเรียน)</div>
+        <div class="sub-row"><span class="sub-label">จำนวนและพีชคณิต</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="27.81" style="background:#fb7185"></div></div><span class="sub-val" style="color:#e11d48">27.81</span></div>
+        <div class="sub-row"><span class="sub-label">การวัดและเรขาคณิต</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="21.87" style="background:#fb7185"></div></div><span class="sub-val" style="color:#e11d48">21.87</span></div>
+        <div class="sub-row"><span class="sub-label">สถิติและความน่าจะเป็น</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="0" style="background:#fb7185"></div></div><span class="sub-val" style="color:#e11d48">0.00</span></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" data-color="green" onclick="toggleSub('sci',event)">
+        <div class="card-top"><div class="card-icon">🔬</div><button class="expand-btn" id="btn-sci">ดูรายสาระ ▾</button></div>
+        <div class="card-subject">วิทยาศาสตร์ ⭐</div>
+        <div class="card-code">รหัสวิชา 65 · ผู้เข้าสอบ 3 คน</div>
+        <div class="score-row"><span class="score-label">โรงเรียน</span><div class="bar-wrap"><div class="bar" data-w="39.17" style="background:#10b981"></div><div class="tooltip">39.17 / 100 คะแนน</div></div><span class="score-value" style="color:#059669">39.17</span></div>
+        <div class="score-row"><span class="score-label">ประเทศ</span><div class="bar-wrap"><div class="bar" data-w="35.43" style="background:#cbd5e1"></div><div class="tooltip">35.43 / 100 คะแนน</div></div><span class="score-value" style="color:#94a3b8">35.43</span></div>
+        <div class="diff-pill above">▲ สูงกว่าประเทศ 3.74 คะแนน</div>
+      </div>
+      <div class="sub-panel" id="sub-sci">
+        <div class="sub-title">คะแนนรายสาระ (โรงเรียน)</div>
+        <div class="sub-row"><span class="sub-label">วิทยาศาสตร์ชีวภาพ</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="37.50" style="background:#34d399"></div></div><span class="sub-val" style="color:#059669">37.50</span></div>
+        <div class="sub-row"><span class="sub-label">วิทยาศาสตร์กายภาพ</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="44.44" style="background:#34d399"></div></div><span class="sub-val" style="color:#059669">44.44</span></div>
+        <div class="sub-row"><span class="sub-label">วิทยาศาสตร์โลกและอวกาศ</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="46.67" style="background:#34d399"></div></div><span class="sub-val" style="color:#059669">46.67</span></div>
+        <div class="sub-row"><span class="sub-label">เทคโนโลยี</span><div class="sub-bar-wrap"><div class="sub-bar" data-w="0" style="background:#34d399"></div></div><span class="sub-val" style="color:#059669">0.00</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-card"><div class="stat-num" style="color:#d97706">3</div><div class="stat-lbl">นักเรียนเข้าสอบ<br>(คน)</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#059669">1</div><div class="stat-lbl">วิชาสูงกว่า<br>ระดับประเทศ</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#e11d48">3</div><div class="stat-lbl">วิชาต่ำกว่า<br>ระดับประเทศ</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#2563eb">27.88</div><div class="stat-lbl">คะแนนเฉลี่ย<br>รวมทุกวิชา</div></div>
+  </div>
+
+  <div class="develop">
+    <div class="develop-title">⚡ สาระที่ควรเร่งพัฒนา (ต่ำกว่าค่าเฉลี่ยประเทศ)</div>
+    <div class="develop-list">
+      <div class="chip"><span class="chip-num">1</span> วรรณคดีและวรรณกรรม (ไทย)</div>
+      <div class="chip"><span class="chip-num">2</span> ภาษาเพื่อการสื่อสาร (อังกฤษ)</div>
+      <div class="chip"><span class="chip-num">3</span> สถิติและความน่าจะเป็น (คณิต)</div>
+      <div class="chip"><span class="chip-num">4</span> เทคโนโลยี (วิทย์)</div>
+      <div class="chip"><span class="chip-num">5</span> การอ่าน (ภาษาไทย)</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ CHART ══ -->
+<div class="panel" id="panel-chart">
+  <div class="filter-row" id="level-filter">
+    <div class="filter-btn on" onclick="setLevel(this,'country')">vs ประเทศ</div>
+    <div class="filter-btn" onclick="setLevel(this,'province')">vs จังหวัด</div>
+    <div class="filter-btn" onclick="setLevel(this,'region')">vs ภาค</div>
+    <div class="filter-btn" onclick="setLevel(this,'size')">vs ขนาดโรงเรียน</div>
+  </div>
+  <div class="chart-section">
+    <div class="chart-title">📊 เปรียบเทียบคะแนนเฉลี่ย 4 วิชา</div>
+    <div class="chart-bars" id="chart-bars"></div>
+    <div class="chart-legend">
+      <div class="cl-item"><div class="cl-dot" style="background:#f59e0b"></div>โรงเรียน</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#94a3b8"></div><span id="cl-label">ประเทศ</span></div>
+    </div>
+  </div>
+  <div class="chart-section">
+    <div class="chart-title">📋 ตารางเปรียบเทียบ</div>
+    <table class="comp-table">
+      <thead><tr><th>วิชา</th><th>โรงเรียน</th><th id="th-cmp">เปรียบเทียบ</th><th>ผลต่าง</th></tr></thead>
+      <tbody id="comp-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ DETAIL ══ -->
+<div class="panel" id="panel-detail">
+  <div class="chart-section">
+    <div class="chart-title">🔍 คะแนนรายสาระ — โรงเรียน vs ประเทศ</div>
+    <div id="detail-rows"></div>
+  </div>
+</div>
+
+<div class="footer">ข้อมูลจาก สทศ. · O-NET ป.6 ปีการศึกษา 2568 · โรงเรียนบ้านหนองแสง รหัส 1035010061 · จ.ยโสธร</div>
+</div>
+
+<script>
+const subjects=[
+  {key:'thai',label:'ภาษาไทย',short:'ภาษาไทย',icon:'📖',color:'#f59e0b',school:27.75,province:44.53,region:45.79,country:47.60,size:44.52},
+  {key:'eng', label:'ภาษาอังกฤษ',short:'อังกฤษ',icon:'🌐',color:'#3b82f6',school:22.92,province:30.42,region:30.19,country:33.58,size:27.96},
+  {key:'math',label:'คณิตศาสตร์',short:'คณิต',icon:'🔢',color:'#f43f5e',school:21.67,province:23.73,region:23.58,country:24.90,size:21.93},
+  {key:'sci', label:'วิทยาศาสตร์',short:'วิทย์',icon:'🔬',color:'#10b981',school:39.17,province:34.01,region:34.62,country:35.43,size:33.46},
+];
+const levelMeta={country:{label:'ประเทศ',key:'country'},province:{label:'จังหวัด',key:'province'},region:{label:'ภาค',key:'region'},size:{label:'ขนาดโรงเรียน',key:'size'}};
+let curLevel='country';
+
+const detailData=[
+  {subject:'ภาษาไทย',color:'#f59e0b',items:[
+    {name:'การอ่าน',school:33.33,country:50.25},{name:'การเขียน',school:37.20,country:47.93},
+    {name:'การฟัง การดู และการพูด',school:22.22,country:48.51},{name:'หลักการใช้ภาษาไทย',school:27.78,country:43.15},
+    {name:'วรรณคดีและวรรณกรรม',school:0.00,country:49.49},
+  ]},
+  {subject:'ภาษาอังกฤษ',color:'#3b82f6',items:[
+    {name:'ภาษาเพื่อการสื่อสาร',school:21.21,country:35.25},{name:'ภาษาและวัฒนธรรม',school:27.78,country:28.53},
+    {name:'ภาษากับชุมชนและโลก',school:25.00,country:31.92},
+  ]},
+  {subject:'คณิตศาสตร์',color:'#f43f5e',items:[
+    {name:'จำนวนและพีชคณิต',school:27.81,country:29.26},{name:'การวัดและเรขาคณิต',school:21.87,country:21.22},
+    {name:'สถิติและความน่าจะเป็น',school:0.00,country:30.38},
+  ]},
+  {subject:'วิทยาศาสตร์',color:'#10b981',items:[
+    {name:'วิทยาศาสตร์ชีวภาพ',school:37.50,country:29.41},{name:'วิทยาศาสตร์กายภาพ',school:44.44,country:39.92},
+    {name:'วิทยาศาสตร์โลกและอวกาศ',school:46.67,country:38.42},{name:'เทคโนโลยี',school:0.00,country:19.75},
+  ]},
+];
+
+// Animate main bars
+function animateBars(){
+  document.querySelectorAll('.bar').forEach(b=>{
+    const w=b.dataset.w;
+    requestAnimationFrame(()=>{setTimeout(()=>{b.style.width=w+'%';},120);});
+  });
+}
+
+// Tabs
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>{el.classList.toggle('active',['overview','chart','detail'][i]===t);});
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+t).classList.add('active');
+  if(t==='chart') buildChart();
+  if(t==='detail') buildDetail();
+}
+
+// Toggle sub-panel
+function toggleSub(id,e){
+  e.stopPropagation();
+  const panel=document.getElementById('sub-'+id);
+  const btn=document.getElementById('btn-'+id);
+  const card=panel.previousElementSibling;
+  const isOpen=panel.classList.contains('open');
+  panel.classList.toggle('open',!isOpen);
+  card.style.borderRadius=isOpen?'':'20px 20px 0 0';
+  btn.textContent=isOpen?'ดูรายสาระ ▾':'ซ่อน ▴';
+  if(!isOpen){
+    panel.querySelectorAll('.sub-bar').forEach(b=>{
+      b.style.width='0';
+      requestAnimationFrame(()=>{setTimeout(()=>{b.style.width=b.dataset.w+'%';},60);});
+    });
+  }
+}
+
+// Level filter
+function setLevel(el,lvl){
+  curLevel=lvl;
+  document.querySelectorAll('#level-filter .filter-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  buildChart();
+}
+
+// Build chart
+function buildChart(){
+  const meta=levelMeta[curLevel];
+  document.getElementById('cl-label').textContent=meta.label;
+  document.getElementById('th-cmp').textContent=meta.label;
+  const maxH=175;
+  const barsEl=document.getElementById('chart-bars');
+  barsEl.innerHTML='';
+  subjects.forEach(s=>{
+    const sh=(s.school/100)*maxH;
+    const ch=(s[meta.key]/100)*maxH;
+    const g=document.createElement('div');
+    g.className='chart-group';
+    g.innerHTML=`<div class="chart-cols">
+      <div class="chart-col" style="background:${s.color};height:0" data-h="${sh}"><div class="c-tip">โรงเรียน: ${s.school}</div></div>
+      <div class="chart-col" style="background:#cbd5e1;height:0" data-h="${ch}"><div class="c-tip">${meta.label}: ${s[meta.key]}</div></div>
+    </div>
+    <div class="chart-label">${s.icon} ${s.short}</div>`;
+    barsEl.appendChild(g);
+    requestAnimationFrame(()=>{setTimeout(()=>{g.querySelectorAll('.chart-col').forEach(c=>{c.style.height=c.dataset.h+'px';});},80);});
+  });
+  const tbody=document.getElementById('comp-tbody');
+  tbody.innerHTML='';
+  subjects.forEach(s=>{
+    const cmp=s[meta.key];
+    const diff=(s.school-cmp).toFixed(2);
+    const pill=diff>=0?`<span class="badge-up">+${diff}</span>`:`<span class="badge-dn">${diff}</span>`;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${s.icon} ${s.label}</td><td style="font-family:'K2D',sans-serif;font-weight:700;color:${s.color}">${s.school}</td><td style="color:#64748b">${cmp}</td><td>${pill}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// Build detail
+function buildDetail(){
+  const el=document.getElementById('detail-rows');
+  el.innerHTML='';
+  detailData.forEach(sub=>{
+    const block=document.createElement('div');
+    block.style='margin-bottom:24px;';
+    block.innerHTML=`<div style="font-family:'K2D',sans-serif;font-weight:700;font-size:.96rem;color:${sub.color};margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(0,0,0,.06)">${sub.subject}</div>`;
+    sub.items.forEach(item=>{
+      const diff=item.school-item.country;
+      const badge=diff>=0?`<span class="badge-up">+${diff.toFixed(1)}</span>`:`<span class="badge-dn">${diff.toFixed(1)}</span>`;
+      const row=document.createElement('div');
+      row.style='display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;';
+      row.innerHTML=`
+        <span style="font-size:.88rem;min-width:160px;color:#334155">${item.name}</span>
+        <div style="flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:1.08rem;color:${sub.color};width:52px">โรงเรียน</span>
+            <div style="flex:1;height:7px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden">
+              <div style="height:100%;background:${sub.color};border-radius:99px;width:0;transition:width .9s cubic-bezier(.16,1,.3,1)" class="anim-bar" data-w="${item.school}"></div>
+            </div>
+            <span style="font-family:'K2D',sans-serif;font-size:.85rem;font-weight:700;color:${sub.color};width:28px;text-align:right">${item.school}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:1.08rem;color:#94a3b8;width:52px">ประเทศ</span>
+            <div style="flex:1;height:7px;background:rgba(0,0,0,.07);border-radius:99px;overflow:hidden">
+              <div style="height:100%;background:#cbd5e1;border-radius:99px;width:0;transition:width .9s cubic-bezier(.16,1,.3,1)" class="anim-bar" data-w="${item.country}"></div>
+            </div>
+            <span style="font-family:'K2D',sans-serif;font-size:.85rem;font-weight:700;color:#94a3b8;width:28px;text-align:right">${item.country}</span>
+          </div>
+        </div>
+        <span style="width:50px;text-align:right">${badge}</span>`;
+      block.appendChild(row);
+    });
+    el.appendChild(block);
+    requestAnimationFrame(()=>{setTimeout(()=>{block.querySelectorAll('.anim-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});},80);});
+  });
+}
+
+window.addEventListener('load',animateBars);
+</script>
+</body>
+</html>
